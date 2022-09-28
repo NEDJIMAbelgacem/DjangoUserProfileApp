@@ -128,3 +128,7 @@ SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 # A user who already loged in will be redirected to this path when he tries to access the login page
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = 'login'
+
+# avatar image upload related settings
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
