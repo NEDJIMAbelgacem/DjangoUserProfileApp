@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.gis import forms as geoforms 
 
 from .models import Profile
 
@@ -40,8 +41,11 @@ class UpdateUserForm(forms.ModelForm):
 class UpdateProfileForm(forms.ModelForm):
     avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
     bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
+    home_address =  forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}))
+    phone_number = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 1}))
+    location = geoforms.PointField()
 
     class Meta:
         model = Profile
-        fields = ['avatar', 'bio']
+        fields = ['avatar', 'bio', 'home_address', 'phone_number', 'location']
 
