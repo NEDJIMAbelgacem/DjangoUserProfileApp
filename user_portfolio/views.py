@@ -5,6 +5,7 @@ from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 
 from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
 
@@ -28,9 +29,14 @@ class RegisterView(View):
             form.save()
 
             username = form.cleaned_data.get('username')
+            password = self.request.POST['password1']
+
+            user = authenticate(username=username, password=password)
+            login(self.request, user)
+
             messages.success(request, f'Account created for {username}')
 
-            return redirect(to='login')
+            return redirect(to='users-profile')
 
         return render(request, self.template_name, {'form': form})
 

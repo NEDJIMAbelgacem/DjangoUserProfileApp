@@ -6,12 +6,29 @@ from django.contrib.gis import forms as geoforms
 from .models import Profile
 
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'form-control', }))
-    last_name = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'placeholder': 'Last Name', 'class': 'form-control', }))
-    username = forms.CharField(max_length=100, required=True, widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control', }))
-    email = forms.EmailField(required=True, widget=forms.TextInput(attrs={'placeholder': 'Email', 'class': 'form-control', }))
-    password1 = forms.CharField(max_length=50, required=True, widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control', 'data-toggle': 'password', 'id': 'password', }))
-    password2 = forms.CharField(max_length=50, required=True, widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password', 'class': 'form-control', 'data-toggle': 'password', 'id': 'password', }))
+    first_name = forms.CharField(
+        max_length=100, required=True, 
+        widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'form-control', })
+        )
+    last_name = forms.CharField(
+        max_length=100, required=True, 
+        widget=forms.TextInput(attrs={'placeholder': 'Last Name', 'class': 'form-control', })
+        )
+    username = forms.CharField(
+        max_length=100, required=True, 
+        widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control', })
+        )
+    email = forms.EmailField(
+        required=True, widget=forms.TextInput(attrs={'placeholder': 'Email', 'class': 'form-control', })
+        )
+    password1 = forms.CharField(
+        max_length=50, required=True, 
+        widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control', 'data-toggle': 'password', 'id': 'password', })
+        )
+    password2 = forms.CharField(
+        max_length=50, required=True, 
+        widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password', 'class': 'form-control', 'data-toggle': 'password', 'id': 'password', })
+        )
 
     class Meta:
         model = User
@@ -38,12 +55,21 @@ class UpdateUserForm(forms.ModelForm):
         fields = ['username', 'email']
 
 
+
 class UpdateProfileForm(forms.ModelForm):
-    avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
-    bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
-    home_address =  forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}))
-    phone_number = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 1}))
-    location = geoforms.PointField()
+    avatar = forms.ImageField(
+        widget=forms.FileInput(attrs={'class': 'form-control-file'})
+        )
+    bio = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5})
+        )
+    home_address =  forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2})
+        )
+    phone_number = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 1}),
+        )
+    location = geoforms.PointField(widget=geoforms.OSMWidget)
 
     class Meta:
         model = Profile
