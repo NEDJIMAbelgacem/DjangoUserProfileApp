@@ -3,6 +3,8 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User, AnonymousUser
 from .models import Profile, LoggedInUsers
 from django.contrib.auth import authenticate, login
+from django.contrib.gis.geos.point import Point
+from django.contrib.gis.geos.collections import MultiPoint
 
 # Create your tests here.
 class ProfileModelTest( TestCase ):
@@ -50,4 +52,26 @@ class ProfileModelTest( TestCase ):
         self.assertEqual( len(logged_in), 2 )
         self.assertEqual( set( u.user.username for u in logged_in ), {"user1", "user3"} )
 
+    def test_user_locations(self):
+        self.assertTrue( len( Profile.getAllUserLocations().user_locations ) == 0 )
 
+        user1 = User.objects.create_user( username="user1", email="user1@gmail.com", password="password1" )
+        user2 = User.objects.create_user( username="user2", email="user2@gmail.com", password="password2" )
+        user3 = User.objects.create_user( username="user3", email="user3@gmail.com", password="password3" )
+
+        profile1 = Profile.objects.filter( user=user1 ).first()
+        profile2 = Profile.objects.filter( user=user2 ).first()
+        profile3 = Profile.objects.filter( user=user3 ).first()
+
+        profile1.location = Point(0, 0)
+        profile2.location = Point(1, 1)
+        profile3.location = Point(2, 2)
+
+        profile1.save()
+        profile2.save()
+        profile3.save()
+
+        user_locations = Profile.getAllUserLocations()
+        result = { (p.coords[0], p.coords[1] ) for p in user_locations.user_locations }
+        exprected = { (0.0, 0.0), (1.0, 1.0), (2.0, 2.0) }
+        self.assertTrue( result == exprected )

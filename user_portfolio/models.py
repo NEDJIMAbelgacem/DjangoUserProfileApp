@@ -10,6 +10,13 @@ from PIL import Image
 
 # Create your models here.
 
+# A model used to create a list of user points to be displayed on map
+class UserLocationsModel(models.Model):
+    user_locations = geomodels.MultiPointField( default = MultiPoint() )
+
+    def __str__(self) -> str:
+        return str( self.user_locations )
+
 # Model for a user's profile implementing additional field to the user's model
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -19,6 +26,17 @@ class Profile(models.Model):
     home_address =  models.TextField(default="")
     phone_number = models.TextField(default="")
     location = geomodels.PointField(default=Point(0.0, 0.0))
+
+    def getAllUserLocations() -> UserLocationsModel:
+        """
+        Returns a UserLocationsModel object containing the locations of all users
+        Note: the returned UserLocationsModel is not saved in database
+        """
+        points_list = [p.location for p in Profile.objects.all()]
+        model = UserLocationsModel()
+        model.user_locations = MultiPoint( *points_list )
+        return model
+
 
     def __str__(self):
         return self.user.username
@@ -40,9 +58,3 @@ class LoggedInUsers(models.Model):
     def __str__(self):
         return f"User( {self.user.username} )"
 
-# A model used to create a list of user points to be displayed on map
-class UserLocationsModel(models.Model):
-    user_locations = geomodels.MultiPointField( default = MultiPoint() )
-
-    def __str__(self) -> str:
-        return str( self.user_locations )

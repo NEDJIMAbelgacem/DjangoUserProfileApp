@@ -97,9 +97,6 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
 
 
 def user_locations(request):
-    points_list = [p.location for p in Profile.objects.all()]
-    model = UserLocationsModel()
-    model.user_locations = MultiPoint( *points_list )
-    
-    user_locations_form = DisplayUserLocationsForm(instance=model)
+    user_locations_form = DisplayUserLocationsForm(instance=Profile.getAllUserLocations())
     return render(request, 'user_portfolio/user_locations.html', {"user_locations_form": user_locations_form})
+
