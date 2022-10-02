@@ -8,6 +8,8 @@ from PIL import Image
 
 
 # Create your models here.
+
+# Model for a user's profile implementing additional field to the user's model
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
@@ -22,7 +24,7 @@ class Profile(models.Model):
 
     def save(self, *args, **kwargs):
         super().save()
-
+        # Resize image to 100 by 100 size
         img = Image.open(self.avatar.path)
 
         if img.height > 100 or img.width > 100:
@@ -30,3 +32,9 @@ class Profile(models.Model):
             img.thumbnail(new_img)
             img.save(self.avatar.path)
 
+# A model for registering logged in users
+class LoggedInUsers(models.Model):
+    user = models.ForeignKey( User, on_delete = models.CASCADE )
+
+    def __str__(self):
+        return f"User( {self.user.username} )"
