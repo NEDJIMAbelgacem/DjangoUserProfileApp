@@ -9,6 +9,7 @@
         </p>
         <hr class="my-4">
         <p class="lead">
+            <a class="btn btn-primary btn-lg" href="{% url 'user_locations' %}" role="button">Visualize user locations</a>
             {% if user.is_authenticated %}
                 <a class="btn btn-primary btn-lg" href="{% url 'users-profile' %}" >Profile</a>
                 <a class="btn btn-primary btn-lg" href="{% url 'logout' %}" role="button">Logout</a>
@@ -16,6 +17,7 @@
                 <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign in</a>
                 <a class="btn btn-primary btn-lg" href="{% url 'users-register' %}" role="button">Sign up</a>
             {% endif %}
+
         </p>
     </div>
 

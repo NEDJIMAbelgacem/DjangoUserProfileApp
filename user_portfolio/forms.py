@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.gis import forms as geoforms 
 
-from .models import Profile
+from .models import Profile, UserLocationsModel
 
 class RegisterForm(UserCreationForm):
     first_name = forms.CharField(
@@ -69,9 +69,16 @@ class UpdateProfileForm(forms.ModelForm):
     phone_number = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 1}),
         )
-    location = geoforms.PointField(widget=geoforms.OSMWidget)
+    location = geoforms.PointField(widget=geoforms.OSMWidget(attrs={'readonly': 'readonly'}))
 
     class Meta:
         model = Profile
         fields = ['avatar', 'bio', 'home_address', 'phone_number', 'location']
 
+
+class DisplayUserLocationsForm(forms.ModelForm):
+    user_locations = geoforms.GeometryCollectionField(widget=geoforms.OSMWidget())
+
+    class Meta:
+        model = UserLocationsModel
+        fields = ['user_locations']

@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models as geomodels
 from django.contrib.gis.geos.point import Point
+from django.contrib.gis.geos.collections import MultiPoint
 
 from PIL import Image
 
@@ -38,3 +39,10 @@ class LoggedInUsers(models.Model):
 
     def __str__(self):
         return f"User( {self.user.username} )"
+
+# A model used to create a list of user points to be displayed on map
+class UserLocationsModel(models.Model):
+    user_locations = geomodels.MultiPointField( default = MultiPoint() )
+
+    def __str__(self) -> str:
+        return str( self.user_locations )

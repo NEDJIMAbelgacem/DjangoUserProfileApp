@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views import View
@@ -6,8 +7,14 @@ from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from django.contrib.gis.forms import OSMWidget
+from django.contrib.gis.geos import Point
+from django.contrib.gis.geos.collections import MultiPoint
+from .models import UserLocationsModel
 
-from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
+from user_portfolio.models import Profile
+
+from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm, DisplayUserLocationsForm
 
 def home(request):
     return render(request, 'user_portfolio/home.html')
@@ -87,3 +94,12 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     template_name = 'user_portfolio/change_password.html'
     success_message = "Successfully Changed Your Password"
     success_url = reverse_lazy('users-home')
+
+
+def user_locations(request):
+    points_list = [p.location for p in Profile.objects.all()]
+    model = UserLocationsModel()
+    model.user_locations = MultiPoint( *points_list )
+    
+    user_locations_form = DisplayUserLocationsForm(instance=model)
+    return render(request, 'user_portfolio/user_locations.html', {"user_locations_form": user_locations_form})
