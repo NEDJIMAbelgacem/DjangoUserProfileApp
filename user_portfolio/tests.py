@@ -1,10 +1,9 @@
 from multiprocessing.connection import Client
 from django.test import TestCase, Client
-from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth.models import User
 from .models import Profile, LoggedInUsers
 from django.contrib.auth import authenticate, login
 from django.contrib.gis.geos.point import Point
-from django.contrib.gis.geos.collections import MultiPoint
 
 # Create your tests here.
 class ProfileModelTest( TestCase ):

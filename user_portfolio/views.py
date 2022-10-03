@@ -6,11 +6,7 @@ from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
-from django.contrib.gis.forms import OSMWidget
-from django.contrib.gis.geos import Point
-from django.contrib.gis.geos.collections import MultiPoint
-from .models import UserLocationsModel
+from django.contrib.auth import authenticate, login, logout as auth_logout
 
 from user_portfolio.models import Profile
 
@@ -72,6 +68,12 @@ class CustomLoginView(LoginView):
 
         # else browser session will be as long as the session cookie time "SESSION_COOKIE_AGE" defined in settings.py
         return super(CustomLoginView, self).form_valid(form)
+
+@login_required
+def logout(request):
+    auth_logout(request)
+    return redirect(to='users-home')
+
 
 @login_required
 def profile(request):

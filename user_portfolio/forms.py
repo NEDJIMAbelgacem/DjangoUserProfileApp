@@ -60,20 +60,17 @@ class UpdateProfileForm(forms.ModelForm):
     avatar = forms.ImageField(
         widget=forms.FileInput(attrs={'class': 'form-control-file'})
         )
-    bio = forms.CharField(
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5})
-        )
     home_address =  forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2})
         )
     phone_number = forms.CharField(
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 1}),
         )
-    location = geoforms.PointField(widget=geoforms.OSMWidget(attrs={'readonly': 'readonly'}))
+    location = geoforms.PointField(widget=geoforms.OSMWidget())
 
     class Meta:
         model = Profile
-        fields = ['avatar', 'bio', 'home_address', 'phone_number', 'location']
+        fields = ['avatar', 'home_address', 'phone_number', 'location']
 
 
 class DisplayUserLocationsForm(forms.ModelForm):
