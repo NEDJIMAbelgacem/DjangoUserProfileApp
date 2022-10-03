@@ -23,4 +23,6 @@ def log_user_login(sender, request, user, **kwargs):
 @receiver(user_logged_out)
 def log_user_logout(sender, request, user, **kwargs):
     print( f"User \"{user.username}\" logged out" )
-    user.delete()
+    logged_in = LoggedInUsers.objects.filter(user=user)
+    for u in logged_in:
+        u.delete()
