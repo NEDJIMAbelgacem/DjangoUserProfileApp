@@ -21,12 +21,12 @@ class ProfileModelTest( TestCase ):
         profilesSet = Profile.objects.filter( user = userObject )
         self.assertIs( len( profilesSet ) == 1, True )
         profile = profilesSet.first()
-        profile.bio = "Edited"
+        profile.home_address = "Edited"
         profile.save()
         profilesSet = Profile.objects.filter( user = userObject )
         self.assertIs( len( profilesSet ) == 1, True )
         profile2 = profilesSet.first()
-        self.assertIs( profile2.bio == "Edited", True )
+        self.assertIs( profile2.home_address == "Edited", True )
     
     def test_login_logout_activity(self):
         user1 = User.objects.create_user( username="user1", email="user1@gmail.com", password="password1" )

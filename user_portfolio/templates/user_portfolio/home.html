@@ -2,7 +2,11 @@
 {% block title %} Home Page {% endblock title%}
 {% block content %}
     <div class="jumbotron">
-        <h1 class="display-4">Welcome</h1>
+        {% if user.is_authenticated %}
+            <h1 class="display-4">Welcome {{user.username}}</h1>
+        {% else %}
+            <h1 class="display-4">Welcome</h1>
+        {% endif %}
         <p class="lead">
             This is <b>user registration and login system</b> build with django
         </p>
